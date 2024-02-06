@@ -13,31 +13,77 @@
 </head>
 
 <body>
-    <div class="login-form mt-3">
+    <div class="user-infor-container mt-3">
         <div class="container">
             <div class="row">
-                <div class="">
-                    <h3>Create new user</h3>
+                <div class="loginForm-user mt-3">
+                    <div class="">
+                        <h3>Create new user</h3>
+                    </div>
+                    <form method="post" action="/createUser">
+                        <div class="mb-2 col-6">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                name="email" required>
+                        </div>
+                        <div class="mb-2 col-6">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-2 col-6">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
-                <form method="post" action="/createUser">
-                    <div class="mb-2 col-6">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
-                            required>
+                <div class="user-table mt-4">
+                    <div>
+                        <h3>User list</h3>
                     </div>
-                    <div class="mb-2 col-6">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-2 col-6">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% results.forEach(function (item, index) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= item.id %>
+                                    </th>
+                                    <td>
+                                        <%= item.email %>
+                                    </td>
+                                    <td>
+                                        <%= item.username %>
+                                    </td>
+                                    <td>
+                                        <%= item.password %>
+                                    </td>
+                                    <td>
+                                        <form style="display: inline;" action="/editUser/<%= item.id %>" method="post">
+                                            <button class="btn btn-warning">Edit</button>
+                                        </form>
+                                        <form style="display: inline;" action="/deleteUser/<%= item.id %>"
+                                            method="post">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>

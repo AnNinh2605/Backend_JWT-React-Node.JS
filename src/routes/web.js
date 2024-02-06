@@ -10,6 +10,9 @@ import homeController from '../controller/homeController'
 const initWebRouters = (app) => {
     router.get('/', homeController.getHomePage)
     router.post('/createUser', homeController.createUserForm)
+    router.post('/deleteUser/:id', homeController.postDeleteUser)
+    router.post('/editUser/:id', homeController.postEditUser)
+    router.post('/postConfirmEditUser', homeController.postConfirmEditUser)
 
     return app.use('/', router);
 }
