@@ -1,4 +1,4 @@
-import userService from '../service/userServicec'
+import userService from '../service/userService'
 
 const getHomePage = async (req, res) => {
     let results = await userService.getAllUserService();
@@ -21,7 +21,7 @@ const postEditUser = async (req, res) => {
     let id = req.params.id;
     let user = await userService.getUserById(id);
     let results = {};
-    if (user && user.length >0 ){
+    if (user && user.length > 0) {
         results = user[0];
     }
     res.render('editUser.ejs', { results });
