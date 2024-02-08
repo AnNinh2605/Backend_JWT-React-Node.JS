@@ -30,39 +30,47 @@ const createUserService = async (email, username, password) => {
 }
 
 const getAllUserService = async () => {
-    const connection = await mysql.createConnection({ host: 'localhost', user: 'root', database: 'jwt' });
     try {
-        const [rows, fields] = await connection.execute('SELECT * FROM user');
-        return rows;
+        let results = await db.User.findAll();
+        return results;
     } catch (e) {
         return e;
     }
 }
 
 const deleteUserService = async (id) => {
-    const connection = await mysql.createConnection({ host: 'localhost', user: 'root', database: 'jwt' });
     try {
-        const [rows, fields] = await connection.execute(`DELETE FROM user WHERE id = ?`, [id]);
-        return rows;
+        await db.User.destroy({
+            where: { id: id }
+        })
     } catch (e) {
         return e;
     }
 }
 
 const getUserById = async (id) => {
-    const connection = await mysql.createConnection({ host: 'localhost', user: 'root', database: 'jwt' });
     try {
-        const [rows, fields] = await connection.execute(`SELECT * FROM user WHERE id = ?`, [id]);
-        return rows;
+        let results = await db.User.findOne({
+            where: {
+                id: id
+            }
+        })
+        return results;
     } catch (e) {
         return e;
     }
 }
 
 const editUserById = async (id, email, username) => {
-    const connection = await mysql.createConnection({ host: 'localhost', user: 'root', database: 'jwt' });
     try {
-        const [rows, fields] = await connection.execute(`UPDATE user SET email = ?, username = ?  WHERE id = ?`, [email, username, id]);
+        await db.User.update(
+            {
+                email: email,
+                username: username
+            },
+            {
+                where: { id: id }
+            })
     } catch (e) {
         return e;
     }

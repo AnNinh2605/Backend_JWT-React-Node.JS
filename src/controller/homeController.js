@@ -19,11 +19,7 @@ const postDeleteUser = async (req, res) => {
 // render view edit user confirm
 const postEditUser = async (req, res) => {
     let id = req.params.id;
-    let user = await userService.getUserById(id);
-    let results = {};
-    if (user && user.length > 0) {
-        results = user[0];
-    }
+    let results = await userService.getUserById(id);
     res.render('editUser.ejs', { results });
 }
 
