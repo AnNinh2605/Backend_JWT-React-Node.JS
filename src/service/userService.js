@@ -30,9 +30,17 @@ const createUserService = async (email, username, password) => {
 }
 
 const getAllUserService = async () => {
+    // let results = await db.User.findAll({
+    //     where: { id: 1 },
+    //     attributes: ["email", "username"],
+    //     include: { model: db.Group, attributes: ["name", "description"] },
+    //     raw: true,
+    //     nest: true
+    // });
+    // console.log(results)
     try {
         let results = await db.User.findAll();
-        return results;
+    return results;
     } catch (e) {
         return e;
     }
