@@ -15,8 +15,6 @@ const initWebRouters = (app) => {
     router.post('/editUser/:id', homeController.postEditUser)
     router.post('/postConfirmEditUser', homeController.postConfirmEditUser)
 
-    router.get('/getApi', apiController.getApi)
-
     return app.use('/', router);
 }
 
