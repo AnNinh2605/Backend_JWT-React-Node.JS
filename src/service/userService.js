@@ -40,7 +40,7 @@ const getAllUserService = async () => {
     // console.log(results)
     try {
         let results = await db.User.findAll();
-    return results;
+        return results;
     } catch (e) {
         return e;
     }

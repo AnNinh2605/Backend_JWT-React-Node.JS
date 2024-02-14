@@ -10,6 +10,7 @@ import apiController from '../controller/apiController'
 const initApiRouters = (app) => {
     router.get('/getApi', apiController.getApi)
     router.post('/register', apiController.postRegister)
+    router.post('/login', apiController.postLogin)
 
     return app.use('/api/v1', router);
 }
