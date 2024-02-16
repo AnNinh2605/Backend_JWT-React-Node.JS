@@ -49,7 +49,7 @@ const postLogin = async (req, res) => {
             DT: data.DT
         })
     } catch (e) {
-        return res.status(500).json({
+        return res.status(200).json({
             EM: 'Something wrong in server',
             EC: 5,
             DT: ''

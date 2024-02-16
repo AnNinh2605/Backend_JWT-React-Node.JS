@@ -87,8 +87,8 @@ const loginService = async (userData) => {
         })
         if (results) {
             let dataPassword = results.password;
-            let checkMatchPassword = await decryptPassword(userData.password, dataPassword)
-            if (checkMatchPassword) {
+            let checkMatchPassword = decryptPassword(userData.password, dataPassword)
+            if (checkMatchPassword === true) {
                 return ({
                     EM: 'Login successfully',
                     EC: '0',
@@ -97,8 +97,8 @@ const loginService = async (userData) => {
             }
             else {
                 return ({
-                    EM: 'Wrong password',
-                    EC: 4
+                    EM: 'Email/phone or password is wrong',
+                    EC: 3
                 })
             }
         }
@@ -112,7 +112,7 @@ const loginService = async (userData) => {
     } catch (e) {
         console.log("Error ", e)
         return ({
-            EM: 'Something wrong in server',
+            EM: 'Something wrong in database',
             EC: 5
         })
     }
