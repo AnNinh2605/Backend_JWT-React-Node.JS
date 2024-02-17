@@ -50,6 +50,34 @@ const readUserService = async () => {
     }
 }
 
+const readUserPaginationService = async (page, limit) => {
+    let offset = (page - 1) * limit;
+    try {
+        let { count, rows } = await db.User.findAndCountAll({
+            limit: limit,
+            offset: offset,
+            attributes: ["id", "email", "username", "phone", "address", "sex"],
+            include: [{ model: db.Group, attributes: ["name"] }]
+        });
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRow : count,
+            totalPages : totalPages,
+            users: rows
+        }
+        return {
+            EM: "Get all user and paginate successfull",
+            EC: 0,
+            DT: data
+        }
+    } catch (e) {
+        return ({
+            EM: 'Something wrong in service',
+            EC: 6
+        })
+    }
+}
+
 const editUserService = async (data) => {
     try {
         let findUser = await db.User.findOne({
@@ -97,11 +125,12 @@ const deleteUserService = async (id) => {
         })
         if (results) {
             return ({
-                EM: "Create user successfull",
+                EM: "Delete user successfull",
                 EC: 0,
                 DT: ''
             })
         }
+        console.log("check results", results);
     } catch (e) {
         return ({
             EM: 'Something wrong in service',
@@ -113,6 +142,7 @@ const deleteUserService = async (id) => {
 module.exports = {
     createUserService,
     readUserService,
+    readUserPaginationService,
     editUserService,
     deleteUserService
 }
