@@ -3,7 +3,8 @@ import express from "express";
 const router = express.Router();
 
 import apiController from '../controller/apiController'
-import userAPIController from '../controller/userApiController'
+import userApiController from '../controller/userApiController'
+import groupApiController from '../controller/groupController'
 /**
  * 
  * @param {*} app 
@@ -13,10 +14,12 @@ const initApiRouters = (app) => {
     router.post('/register', apiController.postRegister)
     router.post('/login', apiController.postLogin)
 
-    router.post('/user/create', userAPIController.createUser)
-    router.get('/user/read', userAPIController.readUser)
-    router.put('/user/edit', userAPIController.editUser)
-    router.delete('/user/delete/:id', userAPIController.deleteUser)
+    router.post('/user/create', userApiController.createUser)
+    router.get('/user/read', userApiController.readUser)
+    router.put('/user/edit', userApiController.editUser)
+    router.delete('/user/delete/:id', userApiController.deleteUser)
+    
+    router.get('/group/read', groupApiController.readGroup)
 
     return app.use('/api/v1', router);
 }
