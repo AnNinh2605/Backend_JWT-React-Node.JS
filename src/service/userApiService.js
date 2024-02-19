@@ -1,17 +1,33 @@
 import db from '../models/index'
+import { findEmail, findPhone, hashPassword } from '../service/loginService'
+
 const createUserService = async (data) => {
     try {
-        await db.User.create({
-            email: data.email,
-            username: data.username,
-            password: data.password,
-            phone: data.phone
-        });
-        return ({
-            EM: "Create user successfull",
-            EC: 0,
-            DT: ''
-        })
+        let checkEmail = await findEmail(data.email);
+        if(checkEmail === true) {
+            return ({
+                EM: "Email already exist",
+                EC: 1,
+                DT: 'email'
+            })
+        }
+        let checkPhone = await findPhone(data.phone)
+        if (checkPhone===true) {
+            return ({
+                EM: "Phone already exist",
+                EC: 1,
+                DT: 'phone'
+            })
+        }
+        else {
+            let hashPass = hashPassword(data.password)
+            await db.User.create({...data, password: hashPass});
+            return ({
+                EM: "Create user successfull",
+                EC: 0,
+                DT: ''
+            })
+        }
     } catch (e) {
         return ({
             EM: 'Something wrong in service',
@@ -57,12 +73,15 @@ const readUserPaginationService = async (page, limit) => {
             limit: limit,
             offset: offset,
             attributes: ["id", "email", "username", "phone", "address", "sex"],
-            include: [{ model: db.Group, attributes: ["name"] }]
+            include: [{ model: db.Group, attributes: ["name"] }],
+            order: [
+                ['id', 'DESC'],
+            ]
         });
         let totalPages = Math.ceil(count / limit);
         let data = {
-            totalRow : count,
-            totalPages : totalPages,
+            totalRow: count,
+            totalPages: totalPages,
             users: rows
         }
         return {

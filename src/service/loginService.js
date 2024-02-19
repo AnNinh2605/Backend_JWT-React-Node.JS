@@ -117,4 +117,4 @@ const loginService = async (userData) => {
         })
     }
 }
-module.exports = { creatUseService, loginService }
+module.exports = { creatUseService, loginService, findEmail, findPhone, hashPassword }
