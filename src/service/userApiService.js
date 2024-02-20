@@ -4,7 +4,7 @@ import { findEmail, findPhone, hashPassword } from '../service/loginService'
 const createUserService = async (data) => {
     try {
         let checkEmail = await findEmail(data.email);
-        if(checkEmail === true) {
+        if (checkEmail === true) {
             return ({
                 EM: "Email already exist",
                 EC: 1,
@@ -12,7 +12,7 @@ const createUserService = async (data) => {
             })
         }
         let checkPhone = await findPhone(data.phone)
-        if (checkPhone===true) {
+        if (checkPhone === true) {
             return ({
                 EM: "Phone already exist",
                 EC: 1,
@@ -21,7 +21,7 @@ const createUserService = async (data) => {
         }
         else {
             let hashPass = hashPassword(data.password)
-            await db.User.create({...data, password: hashPass});
+            await db.User.create({ ...data, password: hashPass });
             return ({
                 EM: "Create user successfull",
                 EC: 0,
@@ -41,7 +41,7 @@ const readUserService = async () => {
         let results = await db.User.findAll(
             {
                 attributes: ["id", "email", "username", "phone", "address", "sex"],
-                include: [{ model: db.Group, attributes: ["name"] }]
+                include: [{ model: db.Group, attributes: ["name", "id"] }]
             }
         );
         if (results) {
@@ -73,7 +73,7 @@ const readUserPaginationService = async (page, limit) => {
             limit: limit,
             offset: offset,
             attributes: ["id", "email", "username", "phone", "address", "sex"],
-            include: [{ model: db.Group, attributes: ["name"] }],
+            include: [{ model: db.Group, attributes: ["name", "id"] }],
             order: [
                 ['id', 'DESC'],
             ]
@@ -101,19 +101,20 @@ const editUserService = async (data) => {
     try {
         let findUser = await db.User.findOne({
             where: {
-                id: data.id
-            }
+                id: data.id,
+            },
+            raw: true
         })
         if (findUser) {
-            let results = await db.update(
+            await db.User.update(
                 {
-                    // email: data.email,
-                    // username: data.username,
-                    // password: data.password,
-                    // phone: data.phone
+                    username: data.username,
+                    address: data.address,
+                    sex: data.sex,
+                    groupId: data.group
                 },
                 {
-                    where: { id: id }
+                    where: { id: data.id }
                 }
             )
             return ({
