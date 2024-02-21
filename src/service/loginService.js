@@ -2,7 +2,11 @@ import db from '../models/index'
 import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
 const Sequelize = require('sequelize');
+require("dotenv").config();
 const Op = Sequelize.Op;
+
+import { findGroupRole } from './JWTService'
+import { createJWT } from '../middleware/jwt'
 
 const findEmail = async (email) => {
     let result = await db.User.findOne({
@@ -57,7 +61,8 @@ const creatUseService = async (userData) => {
                 email: userData.email,
                 username: userData.username,
                 password: hashPass,
-                phone: userData.phone
+                phone: userData.phone,
+                groupId: 4
             });
 
             return ({
@@ -89,10 +94,20 @@ const loginService = async (userData) => {
             let dataPassword = results.password;
             let checkMatchPassword = decryptPassword(userData.password, dataPassword)
             if (checkMatchPassword === true) {
+                let groupRole = await findGroupRole(results.groupId);
+                let payload = {
+                    email: results.email,
+                    groupRole,
+                    expiresIn: process.env.JWT_EXPIRES_IN
+                };
+                let token = createJWT(payload)
                 return ({
                     EM: 'Login successfully',
                     EC: '0',
-                    DT: ''
+                    DT: {
+                        access_token: token,
+                        groupRole
+                    }
                 })
             }
             else {
