@@ -43,8 +43,10 @@ const postRegister = async (req, res) => {
 const postLogin = async (req, res) => {
     try {
         let data = await loginService.loginService(req.body);
-        // set cookies
-        res.cookie("cookie", data.DT.access_token, { httpOnly: true, maxAge: 3600000 })
+        if (data && data.DT.access_token){
+            // set cookies
+            res.cookie("cookie", data.DT.access_token, { httpOnly: true, maxAge: 3600000 })
+        }
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,

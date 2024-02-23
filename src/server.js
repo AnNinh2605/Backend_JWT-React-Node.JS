@@ -4,6 +4,7 @@ import initWebRouters from "./routes/web";
 import initApiRouters from "./routes/api";
 import configCORS from "./controller/configCORS";
 import 'dotenv/config'
+import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 

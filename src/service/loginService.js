@@ -97,8 +97,8 @@ const loginService = async (userData) => {
                 let groupRole = await findGroupRole(results.groupId);
                 let payload = {
                     email: results.email,
+                    username: results.username,
                     groupRole,
-                    expiresIn: process.env.JWT_EXPIRES_IN
                 };
                 let token = createJWT(payload)
                 return ({
@@ -106,7 +106,9 @@ const loginService = async (userData) => {
                     EC: '0',
                     DT: {
                         access_token: token,
-                        groupRole
+                        groupRole,
+                        email: results.email,
+                        username: results.username
                     }
                 })
             }
