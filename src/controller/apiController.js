@@ -60,4 +60,23 @@ const postLogin = async (req, res) => {
         })
     }
 }
-module.exports = { getApi, postRegister, postLogin }
+
+const postLogout = async(req, res) => {
+    try {
+        let logout = await res.clearCookie('cookie');
+        if (logout) {
+            return res.status(200).json({
+                EM: "Log out successful",
+                EC: 0,
+                DT: ''
+            })
+        }
+    } catch (error) {
+        return res.status(200).json({
+            EM: 'Something wrong in server',
+            EC: 5,
+            DT: ''
+        })
+    }
+}
+module.exports = { getApi, postRegister, postLogin, postLogout }

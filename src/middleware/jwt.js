@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
 
-const nonSecurePaths = ['/register', '/login'];
+const nonSecurePaths = ['/register', '/login', '/logout'];
 
 const createJWT = (payload) => {
     let key = process.env.JWT_KEY;
@@ -27,11 +27,19 @@ const verifyToken = (token) => {
     return decoded;
 }
 
+const extractToken = (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        return req.headers.authorization.split(' ')[1];
+    }
+    return null;
+}
+
 const checkUserCookie = (req, res, next) => {
     if (nonSecurePaths.includes(req.path)) return next();
     let userCookie = req.cookies;
-    if (userCookie && userCookie.cookie) {
-        let token = userCookie.cookie;
+    let tokenFromHeader = extractToken(req);
+    if ((userCookie && userCookie.cookie) || tokenFromHeader) {
+        let token = userCookie && userCookie.cookie ? userCookie.cookie: tokenFromHeader;
         let decoded = verifyToken(token);
         if (decoded) {
             req.user = decoded; //set cookie for the next request
