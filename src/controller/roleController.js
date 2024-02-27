@@ -83,10 +83,27 @@ const roleByGroup = async (req, res) => {
         })
     }
 }
+const assignRoleByGroup = async (req, res) => {
+    try {
+        let results = await roleService.assignRoleByGroupService(req.body.data);
+        return res.status(200).json({
+            EM: results.EM,
+            EC: results.EC,
+            DT: results.DT
+        })
+    } catch (e) {
+        return res.status(500).json({
+            EM: 'Something wrong in server',
+            EC: 5,
+            DT: ''
+        })
+    }
+}
 module.exports = {
     createRole,
     // editRole,
     readRole,
     deleteRole,
-    roleByGroup
+    roleByGroup,
+    assignRoleByGroup
 }

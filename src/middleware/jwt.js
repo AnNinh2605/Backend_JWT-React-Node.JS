@@ -75,8 +75,8 @@ const checkUserPermision = (req, res, next) => {
                 EM: "You do not have permission to access this resources"
             })
         }
-        let canAccess = groupRole.some(item => item.url === currentUrl);
-        if (canAccess) {
+        let canAccess = groupRole.some(item => item.url === currentUrl || currentUrl.includes(item.url));
+        if (canAccess === true) {
             next();
         }
         else {
