@@ -126,7 +126,7 @@ const deleteRoleService = async (id) => {
     try {
         let results = await db.Role.destroy({
             where: {
-                id: id
+                id: +id
             }
         })
         if (results) {

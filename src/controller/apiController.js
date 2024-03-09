@@ -43,8 +43,7 @@ const postRegister = async (req, res) => {
 const postLogin = async (req, res) => {
     try {
         let data = await loginService.loginService(req.body);
-        if (data && data.DT.access_token){
-            // set cookies
+        if (+data.DT === 0 && data.DT.access_token) {
             res.cookie("cookie", data.DT.access_token, { httpOnly: true, maxAge: 3600000 })
         }
         return res.status(200).json({
@@ -61,7 +60,7 @@ const postLogin = async (req, res) => {
     }
 }
 
-const postLogout = async(req, res) => {
+const postLogout = async (req, res) => {
     try {
         let logout = await res.clearCookie('cookie');
         if (logout) {

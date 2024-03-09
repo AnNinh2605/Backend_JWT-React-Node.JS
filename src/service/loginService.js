@@ -62,6 +62,7 @@ const creatUseService = async (userData) => {
                 username: userData.username,
                 password: hashPass,
                 phone: userData.phone,
+                address: '',
                 groupId: 4
             });
 
@@ -120,7 +121,7 @@ const loginService = async (userData) => {
             }
         }
         else {
-            console.log("not found user with password/ phone: ", userData.value);
+            console.log("not found user with email/ phone: ", userData.value);
             return ({
                 EM: 'Email or phone is not existing',
                 EC: 3
